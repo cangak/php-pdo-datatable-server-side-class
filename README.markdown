@@ -18,4 +18,6 @@ DEMO
 
 [demo](http://demo.wildantea.com/php-pdo-datatable-server-side-script/)
 
+[Chaining Method](http://demo.wildantea.com/php-pdo-datatable-server-side-script/chain.php)
+
 

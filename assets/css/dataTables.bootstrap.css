@@ -18,6 +18,14 @@ div.dataTables_filter label {
 	white-space: nowrap;
 	text-align: left;
 }
+.dataTables_wrapper .dataTables_length {
+    float: left;
+}
+.dataTables_wrapper .dataTables_info {
+    clear: both;
+    float: left;
+    padding-top: 0.755em;
+}
 
 div.dataTables_filter input {
 	margin-left: 0.5em;

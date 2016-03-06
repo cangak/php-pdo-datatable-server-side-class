@@ -24,7 +24,6 @@
     <!-- Bootstrap -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <!-- Datatable css -->
-    <link href="assets/css/jquery.dataTables.css" rel="stylesheet">
     <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
 
 
@@ -64,8 +63,9 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/js/jquery-1.12.0.min.js"></script>
     <!-- datatables js -->
-    <script src="assets/js/dataTables.bootstrap.min.js"></script>
     <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap.min.js"></script>
+    
 
     <!-- let's begin the script -->
     <script type="text/javascript">
