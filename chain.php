@@ -23,6 +23,38 @@ include "lib/config.php";?>
         /* inline-block space fix */
         margin-right:-4px;
     }
+    #loader {  
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1000;
+    background-color:#fff;
+    opacity: .8;
+   }
+  .ajax-loader {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      margin-left: -32px; /* -1 * image width / 2 */
+      margin-top: -32px;  /* -1 * image height / 2 */
+      display: block;     
+  }
+  .glyphicon-refresh-animate {
+      -animation: spin .7s infinite linear;
+      -webkit-animation: spin2 .7s infinite linear;
+  }
+
+  @-webkit-keyframes spin2 {
+      from { -webkit-transform: rotate(0deg);}
+      to { -webkit-transform: rotate(360deg);}
+  }
+
+  @keyframes spin {
+      from { transform: scale(1) rotate(0deg);}
+      to { transform: scale(1) rotate(360deg);}
+  }
 </style>
     <!-- Bootstrap -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
@@ -40,7 +72,9 @@ include "lib/config.php";?>
 
   </head>
   <body>
-
+   <div id="loader" style="display:none">
+    <img src="assets/images/loadnya.gif" class="ajax-loader"/>
+</div>
 
 
        <!-- Page Content -->
@@ -48,7 +82,7 @@ include "lib/config.php";?>
 
       <!-- Heading Row -->
         <div class="row row-centered">
-            <h1><a href="http://: http://wildantea.com/chaining-datatable-server-side-processing/" target="_blank">PHP Ajax Chaining Datatable server side</a></h1>
+            <h1><a href="http://wildantea.com/chaining-datatable-server-side-processing/" target="_blank">PHP Ajax Chaining Datatable server side</a></h1>
             </div>
 <div class="row">
 <div class="col-md-12">
@@ -84,6 +118,7 @@ include "lib/config.php";?>
               </select>
 
  </div>
+ <img id="img_loader" style="display:none" src="assets/images/ajax-loader.gif">
                       </div><!-- /.form-group -->
 <div class="form-group">
                         <label for="kecamatan" class="control-label col-lg-2">Kecamatan</label>
@@ -91,6 +126,7 @@ include "lib/config.php";?>
                        <select class="form-control" id="kecamatan">
                     <option value="all">Semua</option>
                   </select> </div>
+                  <img id="img_loader_2" style="display:none" src="assets/images/ajax-loader.gif">
                       </div><!-- /.form-group -->
                       
                       <div class="form-group">
@@ -147,6 +183,9 @@ include "lib/config.php";?>
 
      //jika select provinsi di pilih, maka lakukan ajax untuk mengambil data kabupaten dan masukan ke id #kabupaten atau ke select kabupaten
      $('#provinsi').on('change', function() {
+      //panggil loader image
+      $("#loader").show();
+      $("#img_loader").show();
       //ambil value provinsi terpilih simpan ke variable
       id_provinsi = $(this).val();
 
@@ -166,6 +205,11 @@ include "lib/config.php";?>
               $("#kecamatan").chosen("destroy");
               //set default kecamatan ke selected semua
                $("#kecamatan").html('<option value="all">Semua</option>');
+
+               //hide loader image
+                $("#loader").hide();
+                $("#img_loader").hide();
+
           }
 
           });
@@ -173,6 +217,10 @@ include "lib/config.php";?>
 
           //jika select kabupaten di pilih, maka lakukan ajax untuk mengambil data kecamatan dan masukan ke id #kecamatan atau ke select kecamatan
      $('#kabupaten').on('change', function() {
+      //panggil loader image
+      $("#loader").show();
+      $("#img_loader_2").show();
+
       //ambil value kabupaten terpilih simpan ke variable
       id_kabupaten = $(this).val();
 
@@ -187,6 +235,10 @@ include "lib/config.php";?>
               //write data kabupaten ke id atau ke select kabupaten
               $("#kecamatan").html(data);
               $("#kecamatan").trigger('chosen:updated');
+
+               //hide loader image
+                $("#loader").hide();
+                $("#img_loader_2").hide();
           }
 
           });
@@ -197,6 +249,7 @@ include "lib/config.php";?>
      var dataTable = $("#contoh").dataTable({
            'bProcessing': true,
             'bServerSide': true,
+            "deferRender": true,
 
             //disable order dan searching pada kolom pertama dan terakhir 
                  "columnDefs": [ {
@@ -230,6 +283,7 @@ include "lib/config.php";?>
      $("#contoh").dataTable({
            'bProcessing': true,
             'bServerSide': true,
+            "deferRender": true,
 
            //disable order dan searching pada kolom pertama dan terakhir 
                  "columnDefs": [ {
@@ -254,6 +308,9 @@ include "lib/config.php";?>
             console.log(xhr);
 
             }
+          },
+                   "language": {
+          "processing": "<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span> Loading data, Please wait..." 
           },
 
         });
