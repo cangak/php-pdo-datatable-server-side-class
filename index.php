@@ -65,17 +65,15 @@
     <!-- datatables js -->
     <script src="assets/js/jquery.dataTables.min.js"></script>
     <script src="assets/js/dataTables.bootstrap.min.js"></script>
-    
 
     <!-- let's begin the script -->
     <script type="text/javascript">
      $("#contoh").dataTable({
            'bProcessing': true,
             'bServerSide': true,
-
             //disable order dan searching pada tombol aksi
                  "columnDefs": [ {
-              "targets": [0,3],
+              "targets": [3],
               "orderable": false,
               "searchable": false
 

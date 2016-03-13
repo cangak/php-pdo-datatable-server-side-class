@@ -13,6 +13,10 @@ class DTable extends Database
     public $data = array();
     public $request;
     public $search_request;
+    public $is_numbering = 0;
+    public $primary_key;
+    public $order_by;
+    public $order_type;
 
     
 
@@ -84,9 +88,25 @@ class DTable extends Database
     public function number($number)
     {
         $requestData   = $_REQUEST['start']+$number;
-
         return $requestData;
 
+    }
+
+    public function set_numbering_status($status) {
+         $this->is_numbering = $status;
+    }
+
+
+
+    public function set_order_by($val)
+    {
+        $this->order_by = $val;
+    } 
+
+
+    public function set_order_type($val)
+    {
+        $this->order_type = $val;
     }
 
     
@@ -109,7 +129,49 @@ class DTable extends Database
              $offset       = $requestData['start'];
              $offsets      = $offset ? $offset : 0;
              $this->offset = $offsets;
-        
+
+             
+             //if order by is defined
+             if ($this->order_by) {
+                 
+                   if ($requestData['draw']==1) {
+
+                 $do_order = $this->order_by;
+                 $do_order_type = $this->order_type;
+                 } elseif ($requestData['start']>0) {
+
+                     $do_order = $this->order_by;
+                     $do_order_type = $this->order_type;
+                 } elseif ($requestData['start']==0 && $requestData['order'][0]['column']==0) {
+                    $do_order = $this->order_by;
+                     $do_order_type = $this->order_type;
+                 }
+                    else {
+                if ($this->is_numbering==true && $requestData['order'][0]['column']!=0) {
+                    $do_order = $columns[$requestData['order'][0]['column']-1];
+                    $do_order_type = $requestData['order'][0]['dir'];
+                } else {
+                    $do_order = $columns[$requestData['order'][0]['column']];
+                    $do_order_type = $requestData['order'][0]['dir'];
+                }
+                
+                }
+
+             } 
+             else {
+                if ($this->is_numbering==true && $requestData['order'][0]['column']!=0) {
+                    $do_order = $columns[$requestData['order'][0]['column']-1];
+                    $do_order_type = $requestData['order'][0]['dir'];
+                } else {
+                    $do_order = $columns[$requestData['order'][0]['column']];
+                    $do_order_type = $requestData['order'][0]['dir'];
+                }
+                
+             }
+
+           
+            
+//echo $do_order;        
         if (!empty($requestData['search']['value'])) {
 
 
@@ -136,7 +198,7 @@ class DTable extends Database
             //set total filtered
             $this->set_total_filtered($sql,$join);
             
-            $sql .= " ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . " LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "   ";
+            $sql .= " ORDER BY " . $do_order . "   " . $do_order_type . " LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "   ";
 
             $result = $this->result_data($sql,$join);
 
@@ -145,15 +207,13 @@ class DTable extends Database
             $this->set_total_record($sql,$prepare_data);
 
             $this->set_total_filtered($sql,$prepare_data);
-/*
 
-            //offset
-            $offset       = $requestData['start'];
-            $offsets      = $offset ? $offset : 0;
-            $this->offset = $offsets;*/
+         /*   if ($orderBy!=$this->order_by && $orderByType!=$this->order_type) {
+                
+            }*/
             
             $sql = $sql;
-            $sql .= " ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "   LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "   ";
+            $sql .= " ORDER BY " . $do_order . "   " . $do_order_type . "   LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "   ";
 
             $result = $this->result_data($sql,$prepare_data);
 

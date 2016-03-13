@@ -4,6 +4,7 @@ include "lib/config.php";
 
 //kolom apa saja yang akan ditampilkan
 $columns = array(
+	'kecamatan.id_kec',
 	'nama_prov',
 	'nama_kab',
 	'nama_kec',
@@ -25,7 +26,7 @@ inner join kecamatan on kabupaten.id_kab=kecamatan.id_kab where provinsi.id_prov
 	$query = $datatable->get_custom("select provinsi.nama_prov,kabupaten.nama_kab, kecamatan.nama_kec,id_kec
 from provinsi inner join kabupaten 
 on provinsi.id_prov=kabupaten.id_prov
-inner join kecamatan on kabupaten.id_kab=kecamatan.id_kab",$columns);
+inner join kecamatan on kabupaten.id_kab=kecamatan.id_kab ",$columns);
 
 
 	//buat inisialisasi array data
